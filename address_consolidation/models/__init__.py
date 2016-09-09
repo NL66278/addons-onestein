@@ -4,6 +4,5 @@
 
 import account_invoice
 import sale_order
-import procurement_order
 import stock_move
 import stock_picking
