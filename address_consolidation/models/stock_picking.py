@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # © 2016 ONESTEiN BV (<http://www.onestein.eu>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+import re
 
 from openerp import models, fields, api
-import re
 
 
 class StockPicking(models.Model):
@@ -18,7 +18,6 @@ class StockPicking(models.Model):
 
     @api.multi
     def onchange_partner_id(self, partner_id):
-        _logger.debug('ONESTEiN onchange_partner_id')
         res = {'value': {}}
 
         if partner_id:
