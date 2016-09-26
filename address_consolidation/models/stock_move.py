@@ -26,7 +26,6 @@ class StockMove(models.Model):
             pick = picks[0]
         else:
             move = self.browse(move_ids)[0]
-
             values = {
                 'origin': move.origin,
                 'company_id': move.company_id and move.company_id.id or False,
@@ -34,10 +33,8 @@ class StockMove(models.Model):
                 'partner_id': move.partner_id.id or False,
                 'picking_type_id': move.picking_type_id and move.picking_type_id.id or False,
             }
-
-            if self._context.get('sale_ids', None):
-                order = order_obj.browse(self._context['sale_ids'])
-
+            if self._context.get('action_ship_create', None):
+                order = self._context['action_ship_create']
                 if order.partner_shipping_id:
                     values.update({
                         'shipping_partner_street': order.shipping_partner_street,
@@ -47,7 +44,6 @@ class StockMove(models.Model):
                         'shipping_partner_state_id': order.shipping_partner_state_id.id,
                         'shipping_partner_country_id': order.shipping_partner_country_id.id,
                     })
-
             pick = pick_obj.create(values)
         move_rec = self.browse(move_ids)
         return move_rec.write({'picking_id': pick.id})
