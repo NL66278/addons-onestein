@@ -20,10 +20,12 @@ class AccountInvoice(models.Model):
         string='Country')
 
     @api.multi
-    def onchange_partner_id(self, type, partner_id, date_invoice=False,
-                            payment_term=False, partner_bank_id=False, company_id=False):
+    def onchange_partner_id(
+            self, type, partner_id, date_invoice=False, payment_term=False,
+            partner_bank_id=False, company_id=False):
         res = super(AccountInvoice, self).onchange_partner_id(
-            type, partner_id, date_invoice=False, payment_term=False, partner_bank_id=False, company_id=False
+            type, partner_id, date_invoice=False, payment_term=False,
+            partner_bank_id=False, company_id=False
         )
         # Ronald TODO: WHy not take invoice address if present, instead
         # of standard address?
@@ -46,16 +48,15 @@ class AccountInvoice(models.Model):
         values = super(AccountInvoice, self)._prepare_refund(
             invoice, date=date, period_id=period_id, description=description,
             journal_id=journal_id)
-
         values.update({
             'invoice_partner_street': invoice.invoice_partner_street,
             'invoice_partner_street2': invoice.invoice_partner_street2,
             'invoice_partner_zip': invoice.invoice_partner_zip,
             'invoice_partner_city': invoice.invoice_partner_city,
             'invoice_partner_state_id': invoice.invoice_partner_state_id.id,
-            'invoice_partner_country_id': invoice.invoice_partner_country_id.id,
+            'invoice_partner_country_id':
+                invoice.invoice_partner_country_id.id,
         })
-
         return values
 
     @api.multi
@@ -63,7 +64,6 @@ class AccountInvoice(models.Model):
             self, invoice, without_company=False, context=None):
         address_format = invoice.partner_id.country_id.address_format or \
             "%(street)s\n%(street2)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s"
-
         args = {
             'street': invoice.invoice_partner_street or '',
             'street2': invoice.invoice_partner_street2 or '',
@@ -75,12 +75,10 @@ class AccountInvoice(models.Model):
             'country_code': invoice.invoice_partner_country_id.code or '',
             'country_name': invoice.invoice_partner_country_id.name or '',
         }
-
         if without_company:
             args['company_name'] = ''
         elif invoice.partner_id.parent_id:
             address_format = '%(company_name)s\n' + address_format
-
         res = address_format % args
         res = re.sub("\n\n|\n", "<br/>", res)
         return res

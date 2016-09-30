@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2016 ONESTEiN BV (<http://www.onestein.eu>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-from openerp import models, fields, api
-import re
+from openerp import models, api
 
 
 class StockMove(models.Model):
@@ -18,7 +17,6 @@ class StockMove(models.Model):
         Those attributes are also given as parameters.
         """
         pick_obj = self.env['stock.picking']
-        order_obj = self.env['sale.order']
         picks = pick_obj.search([
             ('group_id', '=', procurement_group),
             ('location_id', '=', location_from),
