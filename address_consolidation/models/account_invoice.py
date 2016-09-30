@@ -22,7 +22,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def onchange_partner_id(self, type, partner_id, date_invoice=False,
                             payment_term=False, partner_bank_id=False, company_id=False):
-        res = super(account_invoice, self).onchange_partner_id(
+        res = super(AccountInvoice, self).onchange_partner_id(
             type, partner_id, date_invoice=False, payment_term=False, partner_bank_id=False, company_id=False
         )
         # Ronald TODO: WHy not take invoice address if present, instead
